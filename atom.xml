@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://vinophantom.github.io/"/>
-  <updated>2020-03-06T18:03:53.455Z</updated>
+  <updated>2020-03-08T15:45:30.283Z</updated>
   <id>https://vinophantom.github.io/</id>
   
   <author>
@@ -15,6 +15,34 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>ParallelStream 的正确打开方式</title>
+    <link href="https://vinophantom.github.io/2020/03/08/ParallelStream-%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/"/>
+    <id>https://vinophantom.github.io/2020/03/08/ParallelStream-%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/</id>
+    <published>2020-03-08T14:17:06.000Z</published>
+    <updated>2020-03-08T15:45:30.283Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="ParallelStream-是什么"><a href="#ParallelStream-是什么" class="headerlink" title="ParallelStream 是什么"></a>ParallelStream 是什么</h1><p>parallelStream 其实就是一个并行执行的流.它通过默认的ForkJoinPool,可能提高你的多线程任务的速度.</p><h1 id="ParallelStream-的作用"><a href="#ParallelStream-的作用" class="headerlink" title="ParallelStream 的作用"></a>ParallelStream 的作用</h1><p>Stream 具有平行处理能力，处理的过程会分而治之，也就是将一个大任务切分成多个小任务，这表示每个任务都是一个操作。</p><a id="more"></a><figure class="highlight java"><figcaption><span>forEach()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><br>List&lt;Integer&gt; numbers = Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>);<br>numbers.parallelStream()<br>       .forEach(out::println); <br><br></code></pre></td></tr></table></figure> <p>上面的代码我们的到的不是顺序的1、2、3、4、5…，而是随机的顺序。</p><p>如果需要按照原来的顺序便利，可以使用forEachOrdered()方法：</p><figure class="highlight java"><figcaption><span>forEachOrdered()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Integer&gt; numbers = Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>);<br>numbers.parallelStream()<br>       .forEachOrdered(out::println); <br></code></pre></td></tr></table></figure><h1 id="ParallelStream-的实现"><a href="#ParallelStream-的实现" class="headerlink" title="ParallelStream 的实现"></a>ParallelStream 的实现</h1><p>ParallelStream 是由 ForkJoin 与 ForkJoinPool 实现的。<br>ForkJoinPool 使用相对少的线程来处理大量的任务。<br>比如有一个任务需要处理100万的数据，那么这个任务会被分割成两个处理50万数据的任务，以此类推，直到任务单元被分割成一个预设的阈值大小的任务，直到这些子任务被执行完，这个任务才将完成。<br>这和ThreadPoolExecutor的区别是，ThreadPoolExecutor 处理这个100万的任务会需要100万的线程。</p><blockquote><p>ForkJoinPool 默认的大小等于当前机器的 CPU 核心数。<br>可以使用 <code>-Djava.util.concurrent.ForkJoinPool.common.parallelism=N</code> 来设置 ForkJoinPool 的大小。</p><p><strong>程序中的 ParallelStream 共用一个 commonForkJoinPool</strong>。</p></blockquote><h1 id="ParallelStreams-的坑"><a href="#ParallelStreams-的坑" class="headerlink" title="ParallelStreams 的坑"></a>ParallelStreams 的坑</h1><p>ParallelStream固然有它强大的地方，但同样的，它也存在着陷阱。</p><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"> <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">query</span><span class="hljs-params">(List&lt;Request&gt; reqs)</span> </span>&#123;<br>     Optional&lt;String&gt; result = reqs.stream().parallel().map( -&gt; &#123;<br>      <span class="hljs-keyword">return</span> client.url(url).get();<br>      &#125;).findAny();<br>      <span class="hljs-keyword">return</span> result.get();<br>&#125;<br></code></pre></td></tr></table></figure><p>上面的代码用来获取第一个返回的请求，注意网络请求属于IO操作，这里面存在在被阻塞的风险，故而这段代码的设计是存在问题。<br>前面提到程序中的 ParallelStream 共用一个 commonForkJoinPool，试想如果这里调用的 API 响应比较慢，那么这段代码就会影响到其他使用 ParallelStream 的地方（<strong>阻塞</strong>其他任务）。这样的后果往往是不可估量的。</p><h1 id="如何正确使用-ParallelStream"><a href="#如何正确使用-ParallelStream" class="headerlink" title="如何正确使用 ParallelStream"></a>如何正确使用 ParallelStream</h1><ul><li>首先，我们需要考虑需不需要用<code>parallelStream</code>。<br>  1.是否需要并行？<br>  2.任务之间是否是独立的？是否会引起任何竞态条件？<br>  3.结果是否取决于任务的调用顺序？<br>  考虑过这三个问题后再决定是否使用<code>parallelStream</code>。</li></ul><ul><li>其次，使用指定的不与其他任务冲突的 <code>ForkJoinPool</code>。</li></ul><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><code class="hljs java">ForkJoinPool forkJoinPool = <span class="hljs-keyword">new</span> ForkJoinPool(<span class="hljs-number">3</span>);  <br>forkJoinPool.submit(() -&gt; &#123;  <br>    firstRange.parallelStream().forEach((number) -&gt; &#123;<br>        <span class="hljs-keyword">try</span> &#123;<br>            Thread.sleep(<span class="hljs-number">5</span>);<br>        &#125; <span class="hljs-keyword">catch</span> (InterruptedException e) &#123; &#125;<br>    &#125;);<br>&#125;);<br></code></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;ParallelStream-是什么&quot;&gt;&lt;a href=&quot;#ParallelStream-是什么&quot; class=&quot;headerlink&quot; title=&quot;ParallelStream 是什么&quot;&gt;&lt;/a&gt;ParallelStream 是什么&lt;/h1&gt;&lt;p&gt;parallelStream 其实就是一个并行执行的流.它通过默认的ForkJoinPool,可能提高你的多线程任务的速度.&lt;/p&gt;
+&lt;h1 id=&quot;ParallelStream-的作用&quot;&gt;&lt;a href=&quot;#ParallelStream-的作用&quot; class=&quot;headerlink&quot; title=&quot;ParallelStream 的作用&quot;&gt;&lt;/a&gt;ParallelStream 的作用&lt;/h1&gt;&lt;p&gt;Stream 具有平行处理能力，处理的过程会分而治之，也就是将一个大任务切分成多个小任务，这表示每个任务都是一个操作。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Coding" scheme="https://vinophantom.github.io/categories/Coding/"/>
+    
+      <category term="Java" scheme="https://vinophantom.github.io/categories/Coding/Java/"/>
+    
+    
+      <category term="Java" scheme="https://vinophantom.github.io/tags/Java/"/>
+    
+      <category term="Stream" scheme="https://vinophantom.github.io/tags/Stream/"/>
+    
+  </entry>
   
   <entry>
     <title>编写卓越的代码——防御性编程</title>
