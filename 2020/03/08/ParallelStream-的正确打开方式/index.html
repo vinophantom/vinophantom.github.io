@@ -10,16 +10,16 @@
 <title>ParallelStream 的正确打开方式 - Quantum</title>
 
 
-    <meta name="description" content="ParallelStream 是什么parallelStream 其实就是一个并行执行的流.它通过默认的ForkJoinPool,可能提高你的多线程任务的速度. ParallelStream 的作用Stream 具有平行处理能力，处理的过程会分而治之，也就是将一个大任务切分成多个小任务，这表示每个任务都是一个操作。">
+    <meta name="description" content="ParallelStream 是什么ParallelStream 其实就是一个并行执行的流.它通过默认的ForkJoinPool,可能提高你的多线程任务的速度. ParallelStream 的作用ParallelStream 具有平行处理能力，处理的过程会分而治之，也就是将一个大任务切分成多个小任务，这表示每个任务都是一个操作。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ParallelStream 的正确打开方式">
 <meta property="og:url" content="https://vinophantom.github.io/2020/03/08/ParallelStream-%E7%9A%84%E6%AD%A3%E7%A1%AE%E6%89%93%E5%BC%80%E6%96%B9%E5%BC%8F/index.html">
 <meta property="og:site_name" content="Quantum">
-<meta property="og:description" content="ParallelStream 是什么parallelStream 其实就是一个并行执行的流.它通过默认的ForkJoinPool,可能提高你的多线程任务的速度. ParallelStream 的作用Stream 具有平行处理能力，处理的过程会分而治之，也就是将一个大任务切分成多个小任务，这表示每个任务都是一个操作。">
+<meta property="og:description" content="ParallelStream 是什么ParallelStream 其实就是一个并行执行的流.它通过默认的ForkJoinPool,可能提高你的多线程任务的速度. ParallelStream 的作用ParallelStream 具有平行处理能力，处理的过程会分而治之，也就是将一个大任务切分成多个小任务，这表示每个任务都是一个操作。">
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://vinophantom.github.io/gallery/thumbnails/java-streams.jpg">
 <meta property="article:published_time" content="2020-03-08T14:17:06.000Z">
-<meta property="article:modified_time" content="2020-03-08T15:45:30.283Z">
+<meta property="article:modified_time" content="2020-03-08T15:54:57.931Z">
 <meta property="article:author" content="许伟杰">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Stream">
@@ -166,8 +166,8 @@
             
         </h1>
         <div class="content">
-            <h1 id="ParallelStream-是什么"><a href="#ParallelStream-是什么" class="headerlink" title="ParallelStream 是什么"></a>ParallelStream 是什么</h1><p>parallelStream 其实就是一个并行执行的流.它通过默认的ForkJoinPool,可能提高你的多线程任务的速度.</p>
-<h1 id="ParallelStream-的作用"><a href="#ParallelStream-的作用" class="headerlink" title="ParallelStream 的作用"></a>ParallelStream 的作用</h1><p>Stream 具有平行处理能力，处理的过程会分而治之，也就是将一个大任务切分成多个小任务，这表示每个任务都是一个操作。</p>
+            <h1 id="ParallelStream-是什么"><a href="#ParallelStream-是什么" class="headerlink" title="ParallelStream 是什么"></a>ParallelStream 是什么</h1><p><strong>ParallelStream</strong> 其实就是一个并行执行的流.它通过默认的ForkJoinPool,可能提高你的多线程任务的速度.</p>
+<h1 id="ParallelStream-的作用"><a href="#ParallelStream-的作用" class="headerlink" title="ParallelStream 的作用"></a>ParallelStream 的作用</h1><p><strong>ParallelStream</strong> 具有平行处理能力，处理的过程会分而治之，也就是将一个大任务切分成多个小任务，这表示每个任务都是一个操作。</p>
 <a id="more"></a>
 
 
@@ -182,12 +182,12 @@
 <p>ForkJoinPool 默认的大小等于当前机器的 CPU 核心数。<br>可以使用 <code>-Djava.util.concurrent.ForkJoinPool.common.parallelism=N</code> 来设置 ForkJoinPool 的大小。</p>
 <p><strong>程序中的 ParallelStream 共用一个 commonForkJoinPool</strong>。</p>
 </blockquote>
-<h1 id="ParallelStreams-的坑"><a href="#ParallelStreams-的坑" class="headerlink" title="ParallelStreams 的坑"></a>ParallelStreams 的坑</h1><p>ParallelStream固然有它强大的地方，但同样的，它也存在着陷阱。</p>
+<h1 id="ParallelStream-的坑"><a href="#ParallelStream-的坑" class="headerlink" title="ParallelStream 的坑"></a>ParallelStream 的坑</h1><p><strong>ParallelStream</strong>固然有它强大的地方，但同样的，它也存在着陷阱。</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><code class="hljs java"> <span class="hljs-function"><span class="hljs-keyword">public</span> Object <span class="hljs-title">query</span><span class="hljs-params">(List&lt;Request&gt; reqs)</span> </span>&#123;<br>     Optional&lt;String&gt; result = reqs.stream().parallel().map( -&gt; &#123;<br>      <span class="hljs-keyword">return</span> client.url(url).get();<br>      &#125;).findAny();<br>      <span class="hljs-keyword">return</span> result.get();<br>&#125;<br></code></pre></td></tr></table></figure>
 
-<p>上面的代码用来获取第一个返回的请求，注意网络请求属于IO操作，这里面存在在被阻塞的风险，故而这段代码的设计是存在问题。<br>前面提到程序中的 ParallelStream 共用一个 commonForkJoinPool，试想如果这里调用的 API 响应比较慢，那么这段代码就会影响到其他使用 ParallelStream 的地方（<strong>阻塞</strong>其他任务）。这样的后果往往是不可估量的。</p>
+<p>上面的代码用来获取第一个返回的请求，注意网络请求属于IO操作，这里面存在在被阻塞的风险，故而这段代码的设计是存在问题。<br>前面提到程序中的 <code>ParallelStream</code> 共用一个 commonForkJoinPool，试想如果这里调用的 API 响应比较慢，那么这段代码就会影响到其他使用 <code>ParallelStream</code> 的地方（<strong>阻塞</strong>其他任务）。这样的后果往往是不可估量的。</p>
 <h1 id="如何正确使用-ParallelStream"><a href="#如何正确使用-ParallelStream" class="headerlink" title="如何正确使用 ParallelStream"></a>如何正确使用 ParallelStream</h1><ul>
-<li>首先，我们需要考虑需不需要用<code>parallelStream</code>。<br>  1.是否需要并行？<br>  2.任务之间是否是独立的？是否会引起任何竞态条件？<br>  3.结果是否取决于任务的调用顺序？<br>  考虑过这三个问题后再决定是否使用<code>parallelStream</code>。</li>
+<li>首先，我们需要考虑需不需要用<code>ParallelStream</code>。<br>  1.是否需要并行？<br>  2.任务之间是否是独立的？是否会引起任何竞态条件？<br>  3.结果是否取决于任务的调用顺序？<br>  考虑过这三个问题后再决定是否使用<code>ParallelStream</code>。</li>
 </ul>
 <ul>
 <li>其次，使用指定的不与其他任务冲突的 <code>ForkJoinPool</code>。</li>
@@ -382,9 +382,9 @@
         <span class="has-mr-6">3</span>
         <span>ParallelStream 的实现</span>
         </a></li><li>
-        <a class="is-flex" href="#ParallelStreams-的坑">
+        <a class="is-flex" href="#ParallelStream-的坑">
         <span class="has-mr-6">4</span>
-        <span>ParallelStreams 的坑</span>
+        <span>ParallelStream 的坑</span>
         </a></li><li>
         <a class="is-flex" href="#如何正确使用-ParallelStream">
         <span class="has-mr-6">5</span>
@@ -415,9 +415,9 @@
         <span class="has-mr-6">3</span>
         <span>ParallelStream 的实现</span>
         </a></li><li>
-        <a class="is-flex" href="#ParallelStreams-的坑">
+        <a class="is-flex" href="#ParallelStream-的坑">
         <span class="has-mr-6">4</span>
-        <span>ParallelStreams 的坑</span>
+        <span>ParallelStream 的坑</span>
         </a></li><li>
         <a class="is-flex" href="#如何正确使用-ParallelStream">
         <span class="has-mr-6">5</span>
