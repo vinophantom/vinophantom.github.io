@@ -512,8 +512,6 @@ figure.highlight .section {
   border-radius: inherit;
 }
 .title {
-  border-bottom: 1px;
-  border-bottom-style: solid;
   height: 2em;
 }
 /* ---------------------------------
