@@ -19,7 +19,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="https://vinophantom.github.io/gallery/thumbnails/java-streams.jpg">
 <meta property="article:published_time" content="2020-03-08T14:17:06.000Z">
-<meta property="article:modified_time" content="2020-03-08T15:54:57.931Z">
+<meta property="article:modified_time" content="2020-03-08T16:21:21.655Z">
 <meta property="article:author" content="许伟杰">
 <meta property="article:tag" content="Java">
 <meta property="article:tag" content="Stream">
@@ -171,11 +171,11 @@
 <a id="more"></a>
 
 
-<figure class="highlight java"><figcaption><span>forEach()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs java"><br>List&lt;Integer&gt; numbers = Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>);<br>numbers.parallelStream()<br>       .forEach(out::println); <br><br></code></pre></td></tr></table></figure> 
+<figure class="highlight java"><figcaption><span>forEach()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Integer&gt; numbers = Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>);<br><br>numbers.parallelStream()<br>       .forEach(out::println); <br></code></pre></td></tr></table></figure> 
 
 <p>上面的代码我们的到的不是顺序的1、2、3、4、5…，而是随机的顺序。</p>
 <p>如果需要按照原来的顺序便利，可以使用forEachOrdered()方法：</p>
-<figure class="highlight java"><figcaption><span>forEachOrdered()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Integer&gt; numbers = Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>);<br>numbers.parallelStream()<br>       .forEachOrdered(out::println); <br></code></pre></td></tr></table></figure>
+<figure class="highlight java"><figcaption><span>forEachOrdered()</span></figcaption><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs java">List&lt;Integer&gt; numbers = Arrays.asList(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>, <span class="hljs-number">4</span>, <span class="hljs-number">5</span>, <span class="hljs-number">6</span>, <span class="hljs-number">7</span>, <span class="hljs-number">8</span>, <span class="hljs-number">9</span>);<br><br>numbers.parallelStream()<br>       .forEachOrdered(out::println);<br></code></pre></td></tr></table></figure>
 
 <h1 id="ParallelStream-的实现"><a href="#ParallelStream-的实现" class="headerlink" title="ParallelStream 的实现"></a>ParallelStream 的实现</h1><p>ParallelStream 是由 ForkJoin 与 ForkJoinPool 实现的。<br>ForkJoinPool 使用相对少的线程来处理大量的任务。<br>比如有一个任务需要处理100万的数据，那么这个任务会被分割成两个处理50万数据的任务，以此类推，直到任务单元被分割成一个预设的阈值大小的任务，直到这些子任务被执行完，这个任务才将完成。<br>这和ThreadPoolExecutor的区别是，ThreadPoolExecutor 处理这个100万的任务会需要100万的线程。</p>
 <blockquote>

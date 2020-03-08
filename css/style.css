@@ -213,6 +213,7 @@ img.thumbnail {
   margin-bottom: 0.5rem !important;
 }
 .article .content {
+  line-height: 2.2em;
   font-size: 1.1rem;
 }
 .article .content blockquote.pullquote {
@@ -424,6 +425,7 @@ img.thumbnail {
  *        Fix code highlight
  * --------------------------------- */
 figure.highlight {
+  line-height: 1em;
   padding: 0;
   width: 100%;
   position: relative;
@@ -508,6 +510,11 @@ figure.highlight .section {
   vertical-align: inherit;
   min-width: inherit;
   border-radius: inherit;
+}
+.title {
+  border-bottom: 1px;
+  border-bottom-style: solid;
+  height: 2em;
 }
 /* ---------------------------------
  *          Overflow Table
