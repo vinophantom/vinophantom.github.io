@@ -98,4 +98,32 @@
     
   </entry>
   
+  <entry>
+    <title>要记住的设计原则</title>
+    <link href="https://vinophantom.github.io/2019/03/14/%E8%A6%81%E8%AE%B0%E4%BD%8F%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/"/>
+    <id>https://vinophantom.github.io/2019/03/14/%E8%A6%81%E8%AE%B0%E4%BD%8F%E7%9A%84%E8%AE%BE%E8%AE%A1%E5%8E%9F%E5%88%99/</id>
+    <published>2019-03-14T08:38:20.000Z</published>
+    <updated>2020-03-14T12:38:29.555Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="设计原则"><a href="#设计原则" class="headerlink" title="设计原则"></a>设计原则</h1><h2 id="SRP-单一职责原则"><a href="#SRP-单一职责原则" class="headerlink" title="SRP - 单一职责原则"></a>SRP - 单一职责原则</h2><p>一个类，最好只负责一件事，只有一个引起它变化的原因。</p><blockquote><p>接口一定要做到单一职责，类的设计尽量做到只有一个原因引起变化。</p></blockquote><h2 id="ISP-接口隔离原则"><a href="#ISP-接口隔离原则" class="headerlink" title="ISP - 接口隔离原则"></a>ISP - 接口隔离原则</h2><ul><li>客户端不应该依赖它不需要的接口。</li><li>类间的依赖关系应该建立在最小的接口上。</li></ul><a id="more"></a><blockquote><ul><li>Clients should not be forced to depend upon interfaces that they don’t use.</li><li>The dependency of one class to another one should depend on the smallest possible interface.</li></ul></blockquote><h2 id="DIP-依赖倒置原则"><a href="#DIP-依赖倒置原则" class="headerlink" title="DIP - 依赖倒置原则"></a>DIP - 依赖倒置原则</h2><ul><li><p><strong>高层模块</strong>不应该依赖<strong>低层模块</strong>，二者都应该依赖其<strong>抽象</strong></p></li><li><p>抽象不应该依赖细节，细节应该<strong>依赖抽象</strong></p></li><li><p>依赖倒置的中心思想是面向接口编程</p></li><li><p>相对于细节的多变性，抽象的东西要稳定得多。</p></li></ul><h2 id="LSP-里氏替换原则"><a href="#LSP-里氏替换原则" class="headerlink" title="LSP - 里氏替换原则"></a>LSP - 里氏替换原则</h2><blockquote><p>If for each object o1 of type S there is an object o2 of type T such that for all programs P defined in terms of T,the behavior of P is unchanged when o1 is substituted for o2 then S is a subtype of T.</p></blockquote><p>所有引用基类的地方必须能透明地使用其子类对象。（尽量不要重写基类的方法）</p><h2 id="Law-of-Demete-迪米特法则"><a href="#Law-of-Demete-迪米特法则" class="headerlink" title="Law of Demete - 迪米特法则"></a>Law of Demete - 迪米特法则</h2><blockquote><p>Only talk to your immediate friends</p></blockquote><h2 id="OCP-开闭原则"><a href="#OCP-开闭原则" class="headerlink" title="OCP - 开闭原则"></a>OCP - 开闭原则</h2><p>以上所有原则的最终目标，是遵守开闭原则</p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;h1 id=&quot;设计原则&quot;&gt;&lt;a href=&quot;#设计原则&quot; class=&quot;headerlink&quot; title=&quot;设计原则&quot;&gt;&lt;/a&gt;设计原则&lt;/h1&gt;&lt;h2 id=&quot;SRP-单一职责原则&quot;&gt;&lt;a href=&quot;#SRP-单一职责原则&quot; class=&quot;headerlink&quot; title=&quot;SRP - 单一职责原则&quot;&gt;&lt;/a&gt;SRP - 单一职责原则&lt;/h2&gt;&lt;p&gt;一个类，最好只负责一件事，只有一个引起它变化的原因。&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;接口一定要做到单一职责，类的设计尽量做到只有一个原因引起变化。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;ISP-接口隔离原则&quot;&gt;&lt;a href=&quot;#ISP-接口隔离原则&quot; class=&quot;headerlink&quot; title=&quot;ISP - 接口隔离原则&quot;&gt;&lt;/a&gt;ISP - 接口隔离原则&lt;/h2&gt;&lt;ul&gt;
+&lt;li&gt;客户端不应该依赖它不需要的接口。&lt;/li&gt;
+&lt;li&gt;类间的依赖关系应该建立在最小的接口上。&lt;/li&gt;
+&lt;/ul&gt;
+    
+    </summary>
+    
+    
+    
+      <category term="DesignPrinciples" scheme="https://vinophantom.github.io/tags/DesignPrinciples/"/>
+    
+  </entry>
+  
 </feed>
