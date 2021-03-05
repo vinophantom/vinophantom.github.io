@@ -287,7 +287,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><defs>
               <a class="button button--secondary button--pill button--sm"
                 href="/archive.html?tag=Blog">Blog</a>
             </li></ul><ul class="right-col menu"><li><i class="fas fa-user"></i> <span>Jasper Risky Xu</span></li><li><i class="far fa-calendar-alt"></i> <span>Mar 03, 2021</span>
-            </li></ul></div><meta itemprop="author" content="Jasper Risky Xu"/><meta itemprop="datePublished" content="2021-03-03T00:00:00+08:00">
+            </li><li><i class="far fa-eye"></i> <span class="js-pageview" data-page-key="202103031">0</span> views</li></ul></div><meta itemprop="author" content="Jasper Risky Xu"/><meta itemprop="datePublished" content="2021-03-03T00:00:00+08:00">
     <meta itemprop="keywords" content="Jekyll,Blog"><div class="js-article-content"><div class="layout--article"><!-- start custom article top snippet -->
 
 <!-- end custom article top snippet -->
@@ -299,7 +299,7 @@ xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><defs>
 
 <h2 id="jekyll-安装与配置">Jekyll 安装与配置</h2>
 
-<p>jekyll是一个 ruby 写的静态网站渲染器,它本质上是一个ruby程序.因此我们首先需要有ruby环境.</p>
+<p>jekyll 是一个 ruby 写的静态网站渲染器,它本质上是一个 ruby 程序.因此我们首先需要有 ruby 环境.</p>
 
 <ul>
   <li>安装ruby环境</li>
@@ -385,8 +385,8 @@ xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><defs>
   window.Lazyload.js(['//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js', 'https://unpkg.com/valine/dist/Valine.min.js'], function() {
     var _config = {
       el: '#vcomments',
-      appId:  '1cCQCtAwj86gpPxSmYrUOQlF-gzGzoHsz',
-      appKey: 'UOebWCB5kxRBmGmwBqopHYur',
+      appId:  'BL5Eucq0gdKd1C5lBzvPXd8J-gzGzoHsz',
+      appKey: 'yGwoIDWI6HALcAudFmOHO4Hf',
       verify: true,
     };_config.placeholder = 'say something ...';_config.lang = 'en';new Valine(_config);
   });
@@ -1001,7 +1001,93 @@ window.Lazyload.js([SOURCES.jquery, PAHTS.search_js], function() {
     mermaid.init(undefined, '.language-mermaid');
   });
 </script>
+<script>(function() {
+  function errorHandler(error, callback) {
+    if (error) {
+      callback && callback(error);
+      throw error;
+    }
+  }
 
+  function pageview(_AV, options) {
+    var AV = _AV;
+    var appId, appKey, appClass;
+    appId = options.appId;
+    appKey = options.appKey;
+    appClass = options.appClass;
+    AV.init({
+      serverURLs: 'https://avoscloud.com',
+      appId: appId,
+      appKey: appKey
+    });
+    return {
+      get: get,
+      increase: increase
+    };
+
+    function searchKey(key) {
+      var query = new AV.Query(appClass);
+      query.equalTo('key', key);
+      return query.first();
+    }
+
+    function insert(key, title) {
+      var Blog = AV.Object.extend(appClass);
+      var blog = new Blog();
+      blog.set('title', title);
+      blog.set('key', key);
+      blog.set('views', 0);
+      return blog.save();
+    }
+
+    function increment(result) {
+      result.increment('views', 1);
+      return result.save(null, {
+        fetchWhenSave: true
+      });
+    }
+
+    function get(key, callback) {
+      searchKey(key).then(function(result) {
+        if (result) {
+          callback && callback(result.attributes.views);
+        }
+      }, errorHandler);
+    }
+
+    function increase(key, title, callback) {
+      searchKey(key).then(function(result) {
+        if (result) {
+          increment(result).then(function(result) {
+            callback && callback(result.attributes.views);
+          });
+        } else {
+          insert(key, title).then(function(result) {
+            increment(result).then(function(result) {
+              callback && callback(result.attributes.views);
+            });
+          }, errorHandler);
+        }
+      }, errorHandler);
+    }
+  }
+  window.pageview = pageview;
+})();
+</script>
+  <script>
+    window.Lazyload.js(['https://cdn.bootcss.com/jquery/3.1.1/jquery.min.js', '//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js'], function() {
+      var pageview = window.pageview(AV, {
+        appId:    'BL5Eucq0gdKd1C5lBzvPXd8J-gzGzoHsz',
+        appKey:   'yGwoIDWI6HALcAudFmOHO4Hf',
+        appClass: 'visits'
+      });
+      var key =   '202103031';
+      var title = "使用 Jekyll 构建你的博客";
+      pageview.increase(key, title, function(view) {
+        $("[data-page-key='202103031']").text(view);
+      });
+    });
+  </script>
     </div>
     <script>(function () {
   var $root = document.getElementsByClassName('root')[0];
