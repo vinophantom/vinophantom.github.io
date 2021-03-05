@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="en">
   <head>
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" /><meta charset="utf-8">
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" /><meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no"><title>使用 Jekyll 构建你的博客 - JsprX</title>
 
@@ -385,25 +385,16 @@ xmlns:xlink="http://www.w3.org/1999/xlink" width="1000" height="1000"><defs>
   });
 })();
 </script>
-</div><section class="page__comments d-print-none"><!-- fix text color in the input textarea of gitalk -->
-	<style type="text/css">
-		.gitalk-wrapper .gt-header-textarea {
-			color: #333 !important;
-		}
-	</style><div class="gitalk-wrapper" id="js-gitalk-container"></div><script>
-		window.Lazyload.css('https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.css');
-		window.Lazyload.js('https://cdn.bootcss.com/gitalk/1.2.2/gitalk.min.js', function() {
-			var gitalk = new Gitalk({
-				clientID: '85011a73b43d11426fa5',
-				clientSecret: '5c6ca4721e523c53df8a3328f40e493a76cf00df',
-				repo: 'vinophantom.github.io',
-				owner: 'vinophantom',
-				admin: ['vinophantom'],
-				id: '202103031'
-			});
-			gitalk.render('js-gitalk-container');
-		});
-	</script></section></article><!-- start custom main bottom snippet -->
+</div><section class="page__comments d-print-none"><div id="vcomments"></div><script>
+  window.Lazyload.js(['//cdn.jsdelivr.net/npm/leancloud-storage@3.13.2/dist/av-min.js', 'https://unpkg.com/valine/dist/Valine.min.js'], function() {
+    var _config = {
+      el: '#vcomments',
+      appId:  '1cCQCtAwj86gpPxSmYrUOQlF-gzGzoHsz',
+      appKey: 'UOebWCB5kxRBmGmwBqopHYur',
+      verify: true,
+    };_config.placeholder = 'say something ...';_config.lang = 'en';new Valine(_config);
+  });
+</script></section></article><!-- start custom main bottom snippet -->
 
 <!-- end custom main bottom snippet -->
 </div>
