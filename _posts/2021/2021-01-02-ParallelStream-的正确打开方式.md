@@ -6,7 +6,7 @@ tags: Java Coding
 #   image:
 #     src: /image/java/java-streams.jpg
 
-comments: true
+comments: false
 
 show_author_profile: true
 
