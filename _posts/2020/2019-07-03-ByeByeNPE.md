@@ -308,32 +308,36 @@ By using Optional, we can specify alternate values to return or alternate code t
 
 While chained statements are nice to look at in the code, they are not NPE friendly. A single statement spread over several lines will give you the line number of the first line in the stack trace regardless of where it occurs.[^4]
 
-{% highlight java linenos %}
-ref.method1().method2().method3().methods4();
+{% highlight java %}
+
+    Map<String, String> map = new HashMap<>();
+    
+    map.get("key").toUpperCase();
+
 {% endhighlight %}
 
 These kind of chained statement will print only “NullPointerException occurred in line number xyz”. It really is hard to debug such code. 
 
 We'll take a look at how JDK 14 and later version, through [JEP 358](https://openjdk.java.net/jeps/358), will solve this issue.
 
-Most importantly, the detailed exception message is switched off by default in JDK 14 and later version. 
-
+Most importantly, the detailed exception message is switched off by default in JDK 14, on by default in the later version.
 To enable it, we need to use the command-line option:
 
-{% highlight shell linenos %}
+{% highlight shell %}
 -XX:+ShowCodeDetailsInExceptionMessages
 {% endhighlight %}
+
+
 When we enable the feature, the exception message prints the local variable name:
-```
-Cannot invoke 
-  "com.jspr.java14.npe.HelpfulNullPointerException$Ref.method2()" 
-because "ref" is null
 
 ```
+Exception in thread "main" java.lang.NullPointerException: Cannot invoke "String.toUpperCase()" because the return value of "java.util.Map.get(Object)" is null
+	at com.jsprx.jdk15.HelpfulNullPointerException.main(HelpfulNullPointerException.java:12)
+
+```
 
 
 
-# Conclusion
 
 [^1]: [Null References: The Billion Dollar Mistake](https://www.infoq.com/presentations/Null-References-The-Billion-Dollar-Mistake-Tony-Hoare/)
 [^2]: [Youtube - Null References: The Billion Dollar Mistake - Tony Hoare](https://www.youtube.com/watch?v=ybrQvs4x0Ps)
