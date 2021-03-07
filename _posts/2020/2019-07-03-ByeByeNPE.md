@@ -17,7 +17,7 @@ mathjax_autoNumber: false
 mermaid: true
 chart: true
 aside:
-    toc: true
+    toc: false
 
 modify_date: 2020-01-09
 
@@ -67,32 +67,6 @@ __...__[^3]
 
 
 
-
-
-```mermaid
-classDiagram
-      Animal <|-- Duck
-      Animal <|-- Fish
-      Animal <|-- Zebra
-      Animal : +int age
-      Animal : +String gender
-      Animal: +isMammal()
-      Animal: +mate()
-      class Duck{
-          +String beakColor
-          +swim()
-          +quack()
-      }
-      class Fish{
-          -int sizeInFeet
-          -canEat()
-      }
-      class Zebra{
-          +bool is_wild
-          +run()
-      }
-
-```
 
 # NullPointerException in Java
 
@@ -230,7 +204,10 @@ __Static Method Summary__
 |static <T> Optional<T> | `ofNullable(T value)` <br> Returns an Optional describing the specified value, if non-null, otherwise returns an empty Optional.|
 
 We can create a `Optional` instance by invoking methods in the table above. 
-I just offen use method `ofNullable()` to 
+
+`ofNullable()` method can accept a null reference.
+
+
 
 __Instance Method Summary__
 
