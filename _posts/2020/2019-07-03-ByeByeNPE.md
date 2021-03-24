@@ -33,13 +33,13 @@ lightbox: true
 
 # What's wrong with NULL
 
-Simply put,NULL reference (or NULL pointer) is a special marker and keyword indicating that something has no value.Programs routinely use NULL pointers to represent conditions such as the end of a list of unknown length or the failure to perform some action; 
-this use of NULL pointers can be compared to NULLable types and to the Nothing value in an option type.It is created by Tony Hoare,a famous British computer scientist.
+Simply put, NULL reference (or NULL pointer) is a special marker and keyword indicating that something has no value.Programs routinely use NULL pointers to represent conditions such as the end of a list of unknown length or the failure to perform some action; 
+this use of NULL pointers can be compared to NULLable types and to the Nothing value in an option type.It is created by Tony Hoare, a famous British computer scientist.
 
-Simply because it was so easy to implement,many computer language designers use NULL reference.
+Simply because it was so easy to implement, many computer language designers use NULL reference.
 Speaking at a software conference in 2009, Tony Hoare apologized for inventing the NULL reference[^2]
 
-So,what problems does NULL reference cause?
+So, what problems does NULL reference cause?
 
 
 - In these languges, etc Java, NULL is above type checks. It slips through them silently, waiting for runtime, to finally burst free in a shower of errors. 
@@ -108,7 +108,7 @@ Exception in thread "main" java.lang.NullPointerException
 
 
 # How to avoid NPE
-Since Java was created,programmers spent a lot of precious time handling NPE(NullPointerException),which is not some difficult problem.So, let's look at specific ways to solve these problems.
+Since Java was created, programmers spent a lot of precious time handling NPE(NullPointerException), which is not some difficult problem.So, let's look at specific ways to solve these problems.
 
 
 ## Check method arguments
@@ -120,7 +120,7 @@ void doSomething(String s) {
 }
 {% endhighlight %}
 Look at the method `doSomething()`.
-Suppose `s` is a null reference,these operations invoke the member methods of argument `s`,
+Suppose `s` is a null reference, these operations invoke the member methods of argument `s`, 
 it will throws a NPE.
 
 To avoid this NPE, we can modify the code as below.
@@ -137,9 +137,9 @@ void doSomething(String s) {
 
 
 ## @NotNull
-But if we check arguments in each of methods, we may repeat the check operations in different place.So,how do we remind the caller that some arguments can not be null?
+But if we check arguments in each of methods, we may repeat the check operations in different place.So, how do we remind the caller that some arguments can not be null?
 
-Java provides a annotation [`@NotNull`](https://docs.oracle.com/javaee/7/api/javax/validation/constraints/NotNull.html),let us look at how to use it properly.
+Java provides a annotation [`@NotNull`](https://docs.oracle.com/javaee/7/api/javax/validation/constraints/NotNull.html), let us look at how to use it properly.
 
 {% highlight java linenos %}
 void doSomething(@NotNull String s) {
@@ -148,7 +148,7 @@ void doSomething(@NotNull String s) {
 
 {% endhighlight %}
 
-As the annotation `@NotNull` annotated the argument `s`,developers would pay attention to the variable to the method whether is null.
+As the annotation `@NotNull` annotated the argument `s`, developers would pay attention to the variable to the method whether is null.
 
 ## Objects
 
@@ -175,7 +175,7 @@ a.equals(b); // NullPointerException
 String a = null;
 String b = "YES";
 
-Objects.equals(a,b); // false
+Objects.equals(a, b); // false
 
 {% endhighlight %}
 
@@ -215,19 +215,19 @@ __Instance Method Summary__
 |------------------     | ----------------------- |
 |boolean	            | `equals(Object obj)` <br>Indicates whether some other object is "equal to" this Optional.|
 |Optional\<T\>	        | `filter(Predicate<? super T> predicate)` <br> If a value is present, and the value matches the given predicate, return an Optional describing the value, otherwise return an empty Optional.|
-|\<U\> Optional \<U\>	| `flatMap(Function<? super T,Optional<U>> mapper)` <br> If a value is present, apply the provided Optional-bearing mapping function to it, return that result, otherwise return an empty Optional.|
+|\<U\> Optional \<U\>	| `flatMap(Function<? super T, Optional<U>> mapper)` <br> If a value is present, apply the provided Optional-bearing mapping function to it, return that result, otherwise return an empty Optional.|
 |T	                    | `get()` <br> If a value is present in this Optional, returns the value, otherwise throws NoSuchElementException.|
 |int	                | `hashCode()` <br> Returns the hash code value of the present value, if any, or 0 (zero) if no value is present.|
 |void	                | `ifPresent(Consumer<? super T> consumer)` <br>  If a value is present, invoke the specified consumer with the value, otherwise do nothing.|
 |boolean	            | `isPresent()` <br> Return true if there is a value present, otherwise false.|
-|\<U\> Optional \<U\>	| `map(Function<? super T,? extends U> mapper)` <br> If a value is present, apply the provided mapping function to it, and if the result is non-null, return an Optional describing the result.|
+|\<U\> Optional \<U\>	| `map(Function<? super T, ? extends U> mapper)` <br> If a value is present, apply the provided mapping function to it, and if the result is non-null, return an Optional describing the result.|
 |T	                    | `orElse(T other)` <br> Return the value if present, otherwise return other.|
 |T	                    | `orElseGet(Supplier<? extends T> other)` <br> Return the value if present, otherwise invoke other and return the result of that invocation.|
 |\<X extends Throwable\> T | `orElseThrow(Supplier<? extends X> exceptionSupplier)` <br> Return the contained value, if present, otherwise throw an exception to be created by the provided supplier.|
 
 
 
-But if you have to write code like this,
+But if you have to write code like this, 
 
 {% highlight java linenos %}
 String getUsername(Long id) {
@@ -255,7 +255,7 @@ String getUsername(Long id) {
 {% endhighlight %}
 
 Suppose there is a 1-to-many relationship between Campaign and Order.
-If we use traditional method,check whether variables is null, 
+If we use traditional method, check whether variables is null, 
 to implement the feature as below;
 
 {% highlight java linenos %}
@@ -285,7 +285,7 @@ List<Order> findOrdersByCampaignId (Long id) {
 }
 {% endhighlight %}
 
-But if we use `Optional`,
+But if we use `Optional`, 
 
 {% highlight java linenos %}
 List<Order> findOrdersByCampaignId (Long id) {
